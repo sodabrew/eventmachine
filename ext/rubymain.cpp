@@ -624,7 +624,11 @@ t_close_connection
 
 static VALUE t_close_connection (VALUE self UNUSED, VALUE signature, VALUE after_writing)
 {
-	evma_close_connection (NUM2BSIG (signature), ((after_writing == Qtrue) ? 1 : 0));
+	try {
+	  evma_close_connection (NUM2BSIG (signature), ((after_writing == Qtrue) ? 1 : 0));
+	} catch (std::runtime_error e) {
+		rb_raise (rb_eRuntimeError, "%s", e.what());
+	}
 	return Qnil;
 }
 
