@@ -376,6 +376,8 @@ module EventMachine
     #
     # @option args [String] :private_key_file (nil) local path of a readable file that must contain a private key in the [PEM format](http://en.wikipedia.org/wiki/Privacy_Enhanced_Mail).
     #
+    # @option args [String] :private_key_pass (nil) pass phrase to use the {#private_key_file}.
+    #
     # @option args [Boolean] :verify_peer (false)   indicates whether a server should request a certificate from a peer, to be verified by user code.
     #                                               If true, the {#ssl_verify_peer} callback on the {EventMachine::Connection} object is called with each certificate
     #                                               in the certificate chain provided by the peer. See documentation on {#ssl_verify_peer} for how to use this.
@@ -390,6 +392,9 @@ module EventMachine
     # @option args [String] :dhparam (nil)  The local path of a file containing DH parameters for EDH ciphers in [PEM format](http://en.wikipedia.org/wiki/Privacy_Enhanced_Mail) See: 'openssl dhparam'
     #
     # @option args [Array] :ssl_version (TLSv1 TLSv1_1 TLSv1_2) indicates the allowed SSL/TLS versions. Possible values are: {SSLv2}, {SSLv3}, {TLSv1}, {TLSv1_1}, {TLSv1_2}.
+    #
+    # @option args [String] :ca_file
+    # @option args [String] :ca_path
     #
     # @example Using TLS with EventMachine
     #
@@ -415,17 +420,20 @@ module EventMachine
     #
     # @see #ssl_verify_peer
     def start_tls args={}
-      priv_key     = args[:private_key_file]
-      cert_chain   = args[:cert_chain_file]
-      verify_peer  = args[:verify_peer]
-      sni_hostname = args[:sni_hostname]
-      cipher_list  = args[:cipher_list]
-      ssl_version  = args[:ssl_version]
-      ecdh_curve   = args[:ecdh_curve]
-      dhparam      = args[:dhparam]
-      fail_if_no_peer_cert = args[:fail_if_no_peer_cert]
+      priv_key      = args[:private_key_file]
+      priv_key_pass = args[:private_key_pass]
+      cert_chain    = args[:cert_chain_file]
+      sni_hostname  = args[:sni_hostname]
+      cipher_list   = args[:cipher_list]
+      ssl_version   = args[:ssl_version]
+      ecdh_curve    = args[:ecdh_curve]
+      dhparam       = args[:dhparam]
+      ca_file       = args[:ca_file]
+      ca_path       = args[:ca_path]
+      verify_peer   = !!args[:verify_peer]
+      fail_if_no_peer_cert = !!args[:fail_if_no_peer_cert]
 
-      [priv_key, cert_chain].each do |file|
+      [priv_key, cert_chain, ca_file, ca_path].each do |file|
         next if file.nil? or file.empty?
         raise FileNotFoundException,
         "Could not find #{file} for start_tls" unless File.exist? file
@@ -455,7 +463,7 @@ module EventMachine
         end
       end
 
-      EventMachine::set_tls_parms(@signature, priv_key || '', cert_chain || '', verify_peer, fail_if_no_peer_cert, sni_hostname || '', cipher_list || '', ecdh_curve || '', dhparam || '', protocols_bitmask)
+      EventMachine::set_tls_parms(@signature, priv_key || '', priv_key_pass || '', cert_chain || '', verify_peer, fail_if_no_peer_cert, sni_hostname || '', cipher_list || '', ecdh_curve || '', dhparam || '', ca_file || '', ca_path || '', protocols_bitmask)
       EventMachine::start_tls @signature
     end
 
