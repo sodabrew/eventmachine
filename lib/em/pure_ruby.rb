@@ -438,7 +438,6 @@ module EventMachine
 end
 
 module EventMachine
-
   # Factored out so we can substitute other implementations
   # here if desired, such as the one in ActiveRBAC.
   # @private
@@ -449,7 +448,6 @@ module EventMachine
     end
   end
 end
-
 
 module EventMachine
   # @private
@@ -934,8 +932,6 @@ module EventMachine
   end
 end
 
-
-
 module EventMachine
   # @private
   class EvmaKeyboard < StreamObject
@@ -944,11 +940,9 @@ module EventMachine
       EvmaKeyboard.new STDIN
     end
 
-
     def initialize io
       super
     end
-
 
     def select_for_writing?
       false
@@ -958,11 +952,8 @@ module EventMachine
       true
     end
 
-
   end
 end
-
-
 
 module EventMachine
   # @private
@@ -979,12 +970,10 @@ module EventMachine
       EvmaUNIXClient.new sd
     end
 
-
     def initialize io
       super
       @pending = true
     end
-
 
     def select_for_writing?
       @pending ? true : super
@@ -1004,8 +993,6 @@ module EventMachine
         super
       end
     end
-
-
 
   end
 end
@@ -1036,7 +1023,6 @@ module EventMachine
     def initialize io
       super io
     end
-
 
     def select_for_reading?
       true
@@ -1094,7 +1080,6 @@ module EventMachine
       super io
     end
 
-
     def select_for_reading?
       true
     end
@@ -1144,7 +1129,6 @@ module EventMachine
 end
 
 
-
 # @private
 module EventMachine
   # @private
@@ -1184,10 +1168,7 @@ module EventMachine
       @outbound_q.inject(0) {|memo,obj| memo += (obj || "").length}
     end
 
-
   end
-
-
 end
 
 

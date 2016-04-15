@@ -1,7 +1,4 @@
 module EventMachine
-  class FileNotFoundException < Exception
-  end
-
   # EventMachine::Connection is a class that is instantiated
   # by EventMachine's processing loop whenever a new connection
   # is created. (New connections can be either initiated locally
@@ -427,7 +424,7 @@ module EventMachine
 
       [priv_key, cert_chain].each do |file|
         next if file.nil? or file.empty?
-        raise FileNotFoundException,
+        raise Error::FileNotFound,
         "Could not find #{file} for start_tls" unless File.exist? file
       end
 
