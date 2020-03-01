@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.licenses = ['Ruby', 'GPL-2.0']
   s.required_ruby_version = '>= 2.0.0'
 
-  s.authors = ["Francis Cianfrocca", "Aman Gupta"]
-  s.email   = ["garbagecat10@gmail.com", "aman@tmm1.net"]
+  s.authors = ["Francis Cianfrocca", "Aman Gupta", "Aaron Stone"]
+  s.email   = ["garbagecat10@gmail.com", "aman@tmm1.net", "aaron@serendipity.cx"]
 
   s.files = `git ls-files README.md CHANGELOG.md GNU LICENSE rakelib ext java lib docs`.split
   s.test_files = `git ls-files tests examples`.split
